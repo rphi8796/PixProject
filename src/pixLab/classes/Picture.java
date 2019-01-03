@@ -137,16 +137,17 @@ public class Picture extends SimplePicture
     Pixel northPixel = null;
     Pixel southPixel = null;
     int height = pixels.length;
-    for (int row = 0; row < pixels.length; row++)
+    int width = pixels[0].length;
+    for (int col = 0; col < width; col++)
     {
-      for (int col = 0; col < height / 2; col++)
+      for (int row = 0; row < height / 2; row++)
       {
         northPixel = pixels[row][col];
-        southPixel = pixels[row][height - 1 - col];
+        southPixel = pixels[height - 1 - row][col];
         southPixel.setColor(northPixel.getColor());
       }
     } 
-    System.out.println(pixels);
+    System.out.println(height);
   }
   
   /** Mirror just part of a picture of a temple */
