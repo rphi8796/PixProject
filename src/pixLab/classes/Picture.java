@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.text.*;
 import java.util.*;
 import java.util.List; // resolves problem with java.awt.List and java.util.List
+import javax.swing.JFileChooser;
 
 /**
  * A class that represents a picture.  This class inherits from 
@@ -147,7 +148,29 @@ public class Picture extends SimplePicture
         southPixel.setColor(northPixel.getColor());
       }
     } 
-    System.out.println(height);
+  }
+  
+  public void mirrorSeagull()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel topleftPixel = pixels[225][225];
+	  int end = 350;
+	  int bottom = 330;
+	  Pixel primePixel = null;
+	  Pixel newPixel = null;
+	  Pixel newPixel2 = null;
+	  int width = pixels[0].length;
+	  int height = pixels.length;
+	  for (int row = 225; row < bottom; row += 1)
+	  {
+		  for (int col = 225; col < end; col += 1)
+		  {
+					primePixel = pixels[row][col];
+					newPixel = pixels[row - 225][col - 225];
+					newPixel.setColor(primePixel.getColor());
+		  }
+	  }
+	  System.out.println(width);  
   }
   
   /** Mirror just part of a picture of a temple */
@@ -181,8 +204,7 @@ public class Picture extends SimplePicture
     * @param startRow the start row to copy to
     * @param startCol the start col to copy to
     */
-  public void copy(Picture fromPic, 
-                 int startRow, int startCol)
+  public void copy(Picture fromPic, int startRow, int startCol)
   {
     Pixel fromPixel = null;
     Pixel toPixel = null;
@@ -222,6 +244,35 @@ public class Picture extends SimplePicture
     this.write("collage.jpg");
   }
   
+  public void createSeagullCollage()
+  {
+  }
+  
+  private String getPath(String choice)
+  {
+	String path = ".";
+	int result = -99;
+	JFileChooser fileChooser = new JFileChooser();
+	if (choice.equals("save"))
+	{
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (result == JFileChooser.APPROVE_OPTION)
+		{
+			path = fileChooser.getCurrentDirectory().getAbsolutePath();	
+		}
+		
+	}
+	else
+	{
+		if (result == JFileChooser.APPROVE_OPTION)
+		{
+			path = fileChooser.getSelectedFile().getAbsolutePath();
+		}
+	}
+	return path;
+
+  }
+  
   
   /** Method to show large changes in color 
     * @param edgeDist the distance for finding edges
@@ -255,11 +306,9 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("beach.jpg");
-    beach.explore();
-    beach.mirrorHorizontal();
-    beach.explore();
-    
+	String path = FileChooser.pickAFile();
+	Picture arch = new Picture(path);
+	arch.explore();
   }
   
 } // this } is the end of class Picture, put all new methods before this
