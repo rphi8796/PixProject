@@ -226,6 +226,26 @@ public class Picture extends SimplePicture
       }
     }   
   }
+  
+  public void copy1(Picture fromPic, int startRow, int startCol)
+  {
+    Pixel fromPixel = null;
+    Pixel toPixel = null;
+    Pixel[][] toPixels = this.getPixels2D();
+    Pixel[][] fromPixels = fromPic.getPixels2D();
+    for (int fromRow = 0, toRow = startRow; fromRow < fromPixels.length &&toRow < toPixels.length; fromRow++, toRow++)
+    {
+      for (int fromCol = 0, toCol = startCol; 
+           fromCol < fromPixels[0].length &&
+           toCol < toPixels[0].length;  
+           fromCol++, toCol++)
+      {
+        fromPixel = fromPixels[fromRow][fromCol];
+        toPixel = toPixels[toRow][toCol];
+        toPixel.setColor(fromPixel.getColor());
+      }
+    }   
+  }
 
   /** Method to create a collage of several pictures */
   public void createCollage()
@@ -243,36 +263,6 @@ public class Picture extends SimplePicture
     this.mirrorVertical();
     this.write("collage.jpg");
   }
-  
-  public void createSeagullCollage()
-  {
-  }
-  
-  private String getPath(String choice)
-  {
-	String path = ".";
-	int result = -99;
-	JFileChooser fileChooser = new JFileChooser();
-	if (choice.equals("save"))
-	{
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		if (result == JFileChooser.APPROVE_OPTION)
-		{
-			path = fileChooser.getCurrentDirectory().getAbsolutePath();	
-		}
-		
-	}
-	else
-	{
-		if (result == JFileChooser.APPROVE_OPTION)
-		{
-			path = fileChooser.getSelectedFile().getAbsolutePath();
-		}
-	}
-	return path;
-
-  }
-  
   
   /** Method to show large changes in color 
     * @param edgeDist the distance for finding edges
@@ -299,6 +289,84 @@ public class Picture extends SimplePicture
       }
     }
   }
+  public void cyan()
+  {
+	  Pixel [][] pixels = this.getPixels2D();
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setRed(0);  
+		  }
+	  }
+  }
+  public void magenta()
+  {
+	  Pixel [][] pixels = this.getPixels2D();
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setGreen(0);
+		  }
+	  }
+  }
+  public void yellow()
+  {
+	  Pixel [][] pixels = this.getPixels2D();
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setBlue(0);
+		  }
+	  }
+  }
+  
+  /**
+   * copies image 3 times and makes the color values adjust to have cyan, yellow, and magenta  
+   * make the one picture have first priority and don't move it
+   * make another divide into 7 layers and have it move to adjust over
+   * pick two colors randomly that are complementary
+   * also take a square from a picture and make its color on of the two and put it somewhere
+   * there needs to be some opacity
+   */
+  
+  
+  public void glitch()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Picture pic = new Picture("arch.jpg");
+	  Picture noBlue = new Picture("arch.jpg");
+	  Picture noGreen = new Picture("arch.jpg");
+	  int width = pixels[0].length;
+	  int height =  pixels.length;
+	  
+	  noBlue.yellow();
+	  noGreen.magenta();
+	  
+	  Pixel[][] colored = noBlue.getPixels2D();
+	  
+	  
+	  for (int row = 30; row < 90; row += 1)
+	  {
+		  for (int col = 0; col < width; col += 1)
+		  {
+			  Pixel tint = colored[row][col];
+			  pixels[row][col].setColor(tint.getColor());
+		  }
+	  } 
+	  
+	  
+	  for (int row = 100; row < 130; row += 1)
+	  {
+		  for (int col = 0; col < width; col += 1)
+		  {
+			  Pixel tint = colored[row][col];
+			  pixels[row][col].setColor(tint.getColor());
+		  }
+	  } 
+  }
   
   
   /* Main method for testing - each class in Java can have a main 
@@ -306,8 +374,9 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-	String path = FileChooser.pickAFile();
-	Picture arch = new Picture(path);
+	Picture arch = new Picture("arch.jpg");
+	arch.explore();
+	arch.glitch();
 	arch.explore();
   }
   
