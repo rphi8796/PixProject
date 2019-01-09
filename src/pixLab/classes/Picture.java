@@ -323,6 +323,47 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void verticalShift(int factor)
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Picture noBlue = new Picture("arch.jpg");
+	  int width = pixels[0].length;
+	  int height =  pixels.length;
+	  Pixel first = null;
+	  Pixel second = null;
+	  int axis = (int) (((Math.random() * (width - 80)) + 80) / factor);
+
+	  Pixel[][] colored = noBlue.getPixels2D();
+
+	  for (int row = 0; row < height; row += 1)
+	  {	
+		  for (int col = axis; col < width; col += 1)
+		  {	
+			  first = pixels[row][col];
+			  second = colored[row][col - axis];
+			  second.setColor(first.getColor());
+		  }
+	  }
+	  for (int row = 0; row < height; row += 1)
+	  {			
+		  for (int col = 0; col < axis - 1; col += 1)
+		  {
+			  first = pixels[row][col];
+			  second = colored[row][col + width - axis - 1];
+			  second.setColor(first.getColor());
+		  }
+	  }
+	  for (int row = 0; row < height; row += 1)
+	  {			
+		  for (int col = 0; col < width; col += 1)
+		  {
+			  first = pixels[row][col];
+			  second = colored[row][col];
+			  first.setColor(second.getColor());
+		  }
+	  }
+  }
+  
   /**
    * copies image 3 times and makes the color values adjust to have cyan, yellow, and magenta  
    * make the one picture have first priority and don't move it
@@ -338,31 +379,42 @@ public class Picture extends SimplePicture
 	  Pixel[][] pixels = this.getPixels2D();
 	  Picture pic = new Picture("arch.jpg");
 	  Picture noBlue = new Picture("arch.jpg");
+	  
+	  Picture noBlueShift = noBlue;
+	  Picture noBlueShift2 = noBlue;
+	  noBlueShift.verticalShift(1);
+	  noBlueShift.yellow();
+	  noBlueShift2.verticalShift(2);
+	  noBlueShift2.yellow();
 	  Picture noGreen = new Picture("arch.jpg");
+
 	  int width = pixels[0].length;
 	  int height =  pixels.length;
 	  
-	  noBlue.yellow();
-	  noGreen.magenta();
 	  
-	  Pixel[][] colored = noBlue.getPixels2D();
+	  Pixel[][] colored1 = noBlueShift.getPixels2D();
+	  Pixel[][] colored2 = noBlueShift2.getPixels2D();
+	  
+	  noBlue.verticalShift(1);
+	  
+	  noGreen.magenta();
 	  
 	  
 	  for (int row = 30; row < 90; row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
-			  Pixel tint = colored[row][col];
+			  Pixel tint = colored1[row][col];
 			  pixels[row][col].setColor(tint.getColor());
 		  }
 	  } 
 	  
 	  
-	  for (int row = 100; row < 130; row += 1)
+	  for (int row = 200; row < height; row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
-			  Pixel tint = colored[row][col];
+			  Pixel tint = colored2[row][col];
 			  pixels[row][col].setColor(tint.getColor());
 		  }
 	  } 
