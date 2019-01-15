@@ -173,6 +173,60 @@ public class Picture extends SimplePicture
 	  System.out.println(width);  
   }
   
+  public void shiftLeftRight(int amount)
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Picture temp = new Picture(this);
+	  Pixel[][] copied = temp.getPixels2D();
+	  
+	  int shiftedValue = amount;
+	  int width = pixels[0].length;
+	  
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col ++)
+		  {
+			  shiftedValue = (col + amount) % width;
+			  copied[row][col].setColor(pixels[row][shiftedValue].getColor());
+		  }
+	  }
+	  
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setColor(copied[row][col].getColor());
+		  }
+	  }
+  }
+  
+  public void shiftUpDown(int amount)
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Picture temp = new Picture(this);
+	  Pixel[][] copied = temp.getPixels2D();
+	  
+	  int shiftedValue = amount;
+	  int height = pixels.length;
+	  
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col ++)
+		  {
+			  shiftedValue = (row + amount) % height;
+			  copied[row][col].setColor(pixels[shiftedValue][col].getColor());
+		  }
+	  }
+	  
+	  for (int row = 0; row < pixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setColor(copied[row][col].getColor());
+		  }
+	  }
+  }
+  
   /** Mirror just part of a picture of a temple */
   public void mirrorTemple()
   {
@@ -323,45 +377,16 @@ public class Picture extends SimplePicture
 	  }
   }
   
-  public void verticalShift(int factor)
+  
+  public Color getRandomColor()
   {
-	  Pixel[][] pixels = this.getPixels2D();
-	  Picture noBlue = new Picture("arch.jpg");
-	  int width = pixels[0].length;
-	  int height =  pixels.length;
-	  Pixel first = null;
-	  Pixel second = null;
-	  int axis = (int) (((Math.random() * (width - 80)) + 80) / factor);
-
-	  Pixel[][] colored = noBlue.getPixels2D();
-
-	  for (int row = 0; row < height; row += 1)
-	  {	
-		  for (int col = axis; col < width; col += 1)
-		  {	
-			  first = pixels[row][col];
-			  second = colored[row][col - axis];
-			  second.setColor(first.getColor());
-		  }
-	  }
-	  for (int row = 0; row < height; row += 1)
-	  {			
-		  for (int col = 0; col < axis - 1; col += 1)
-		  {
-			  first = pixels[row][col];
-			  second = colored[row][col + width - axis - 1];
-			  second.setColor(first.getColor());
-		  }
-	  }
-	  for (int row = 0; row < height; row += 1)
-	  {			
-		  for (int col = 0; col < width; col += 1)
-		  {
-			  first = pixels[row][col];
-			  second = colored[row][col];
-			  first.setColor(second.getColor());
-		  }
-	  }
+	  int redVal = (int) (Math.random() * 255);
+	  int greenVal = (int) (Math.random() * 255);
+	  int blueVal = (int) (Math.random() * 255);
+	  
+	  Color randColor = new Color(redVal, greenVal, blueVal);
+	  
+	  return randColor;
   }
   
   /**
@@ -377,47 +402,76 @@ public class Picture extends SimplePicture
   public void glitch()
   {
 	  Pixel[][] pixels = this.getPixels2D();
-	  Picture pic = new Picture("arch.jpg");
-	  Picture noBlue = new Picture("arch.jpg");
+	  Picture pic = new Picture(this);
+	  Picture yellow = new Picture(this);
+	  Picture shiftedYellow = new Picture(this);
+	  Picture magenta = new Picture(this);
 	  
-	  Picture noBlueShift = noBlue;
-	  Picture noBlueShift2 = noBlue;
-	  noBlueShift.verticalShift(1);
-	  noBlueShift.yellow();
-	  noBlueShift2.verticalShift(2);
-	  noBlueShift2.yellow();
-	  Picture noGreen = new Picture("arch.jpg");
-
 	  int width = pixels[0].length;
 	  int height =  pixels.length;
 	  
+	  yellow.yellow();
+	  shiftedYellow.yellow();
+	  magenta.magenta();
 	  
-	  Pixel[][] colored1 = noBlueShift.getPixels2D();
-	  Pixel[][] colored2 = noBlueShift2.getPixels2D();
+	  yellow.shiftLeftRight(width / 2);
+	  shiftedYellow.shiftLeftRight(width / 4);
+	  magenta.shiftUpDown(200);
 	  
-	  noBlue.verticalShift(1);
+	  Pixel[][] yellow2D = yellow.getPixels2D();
+	  Pixel[][] shiftedYellow2D = shiftedYellow.getPixels2D();
+	  Pixel[][] magenta2D = magenta.getPixels2D();
 	  
-	  noGreen.magenta();
-	  
-	  
-	  for (int row = 30; row < 90; row += 1)
+	  for (int row = 30; row < 230; row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
-			  Pixel tint = colored1[row][col];
+			  Pixel tint = yellow2D[row][col];
 			  pixels[row][col].setColor(tint.getColor());
 		  }
 	  } 
 	  
 	  
-	  for (int row = 200; row < height; row += 1)
+	  for (int row = 400; row < 450; row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
-			  Pixel tint = colored2[row][col];
+			  Pixel tint = shiftedYellow2D[row][col];
 			  pixels[row][col].setColor(tint.getColor());
 		  }
 	  } 
+	  
+	  for (int row = 500; row < 700; row += 1)
+	  {
+		  for (int col = 0; col < width; col += 1)
+		  {
+			  Pixel tint = magenta2D[row][col];
+			  pixels[row][col].setColor(tint.getColor());
+		  }
+	  } 
+	  
+	  
+	  for (int row = 0; row < height; row += 1)
+	  {
+		  for (int col = 0; col < width; col += 1)
+		  {
+			  if (row % 8 == 0)
+			  {
+				  pixels[row][col].setColor(getRandomColor());
+			  }
+			  
+			  if (col % 8 == 0)
+			  {
+				  pixels[row][col].setColor(getRandomColor());
+			  }
+			  
+			  if ((((col + 1) / (row + 1)) == 2) || (row + 1) / (col + 1) == 2)
+			  {
+				  pixels[row][col].setColor(getRandomColor());
+			  }
+		  }
+	  } 
+	  
   }
   
   
@@ -426,10 +480,10 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-	Picture arch = new Picture("arch.jpg");
-	arch.explore();
-	arch.glitch();
-	arch.explore();
+	Picture joe = new Picture("Joe.jpg");
+	joe.explore();
+	joe.glitch();
+	joe.explore();
   }
   
 } // this } is the end of class Picture, put all new methods before this
