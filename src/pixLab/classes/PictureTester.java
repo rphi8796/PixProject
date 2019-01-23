@@ -9,6 +9,19 @@ package pixLab.classes;
  */
 public class PictureTester
 {
+	public static void testSteganography()
+	{
+		Picture source = new Picture("ColoredParrot.jpg");
+		
+		Picture message = new Picture("Yin.jpg");
+		source.explore();
+		source.hidePicture(message);
+		source.explore();
+		source.revealPicture();
+		source.explore();
+	}
+	
+	
   /** Method to test zeroBlue */
   public static void testZeroBlue()
   {
@@ -71,7 +84,7 @@ public class PictureTester
     //testMirrorArms();
     //testMirrorGull();
     //testMirrorDiagonal();
-    testCollage();
+    //testCollage();
     //testCopy();
     //testEdgeDetection();
     //testEdgeDetection2();
@@ -81,5 +94,6 @@ public class PictureTester
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
     //testGetAverageForColumn(0);
+    testSteganography();
   }
 }

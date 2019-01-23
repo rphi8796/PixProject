@@ -73,6 +73,54 @@ public class Picture extends SimplePicture
   
   ////////////////////// methods ///////////////////////////////////////
   
+  public void hidePicture(Picture hidden)
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel[][] hiddenPixels = hidden.getPixels2D();
+	  
+	  for (int row = 0; row < pixels.length && row < hiddenPixels.length; row++)
+	  {
+		  for (int col = 0; col < pixels[0].length && col < hiddenPixels[0].length; col++)
+		  {
+			  Pixel mPix = pixels[row][col];
+			  Pixel hPix = hiddenPixels[row][col];
+			  
+			  if (hPix.colorDistance(Color.WHITE) > 5)
+			  {
+				  if (mPix.getRed() > 0 && mPix.getRed() % 2 != 1)
+				  {
+					  mPix.setRed(mPix.getRed() - 1);
+				  }
+			  }
+			  else if (mPix.getRed() > 0 && mPix.getRed() % 2 == 1)
+			  {
+				  mPix.setRed(mPix.getRed() - 1);
+			  }
+		  }
+	  }
+  }
+  
+  public void revealPicture()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  
+	  for (int row = 0; row<pixels.length; row++) 
+	  {
+		 for (int col = 0; col < pixels[0].length; col++)
+		 {
+			 
+			 if (pixels[row][col].getRed() > 0 && pixels[row][col].getRed() % 2 != 1)
+			 {
+				 pixels[row][col].setColor(Color.CYAN);
+			 }
+			 else if (pixels[row][col].getRed() > 0 && pixels[row][col].getRed() % 2 == 1)
+			 {
+				 pixels[row][col].setColor(Color.MAGENTA);
+			 }
+		 }
+	  }
+  }
+  
   /**
    * Method to return a string with information about this picture.
    * @return a string with information about the picture such as fileName,
@@ -244,8 +292,7 @@ public class Picture extends SimplePicture
       {
         
         leftPixel = pixels[row][col];      
-        rightPixel = pixels[row]                       
-                         [mirrorPoint - col + mirrorPoint];
+        rightPixel = pixels[row][mirrorPoint - col + mirrorPoint];
         rightPixel.setColor(leftPixel.getColor());
       }
     }
@@ -343,6 +390,7 @@ public class Picture extends SimplePicture
       }
     }
   }
+  
   public void cyan()
   {
 	  Pixel [][] pixels = this.getPixels2D();
@@ -388,16 +436,6 @@ public class Picture extends SimplePicture
 	  
 	  return randColor;
   }
-  
-  /**
-   * copies image 3 times and makes the color values adjust to have cyan, yellow, and magenta  
-   * make the one picture have first priority and don't move it
-   * make another divide into 7 layers and have it move to adjust over
-   * pick two colors randomly that are complementary
-   * also take a square from a picture and make its color on of the two and put it somewhere
-   * there needs to be some opacity
-   */
-  
   
   public void glitch()
   {
@@ -471,7 +509,6 @@ public class Picture extends SimplePicture
 			  }
 		  }
 	  } 
-	  
   }
   
   
@@ -480,7 +517,7 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-	Picture coolPic = new Picture("Lobster.jpg");
+	Picture coolPic = new Picture("Sylvette.jpg");
 	coolPic.explore();
 	coolPic.glitch();
 	coolPic.mirrorVertical();
