@@ -422,7 +422,7 @@ public class Picture extends SimplePicture
 	  Pixel[][] shiftedYellow2D = shiftedYellow.getPixels2D();
 	  Pixel[][] magenta2D = magenta.getPixels2D();
 	  
-	  for (int row = 30; row < 230; row += 1)
+	  for (int row = (height / 2); row < (height / 1.3); row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
@@ -432,7 +432,7 @@ public class Picture extends SimplePicture
 	  } 
 	  
 	  
-	  for (int row = 400; row < 450; row += 1)
+	  for (int row = (height / 6); row < (height / 3); row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
@@ -441,7 +441,7 @@ public class Picture extends SimplePicture
 		  }
 	  } 
 	  
-	  for (int row = 500; row < 700; row += 1)
+	  for (int row = (height - 60); row < height; row += 1)
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
@@ -455,12 +455,12 @@ public class Picture extends SimplePicture
 	  {
 		  for (int col = 0; col < width; col += 1)
 		  {
-			  if (row % 8 == 0)
+			  if (row % 30 == 0)
 			  {
 				  pixels[row][col].setColor(getRandomColor());
 			  }
 			  
-			  if (col % 8 == 0)
+			  if (col % 30 == 0)
 			  {
 				  pixels[row][col].setColor(getRandomColor());
 			  }
@@ -480,10 +480,13 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-	Picture joe = new Picture("Joe.jpg");
-	joe.explore();
-	joe.glitch();
-	joe.explore();
+	Picture coolPic = new Picture("Lobster.jpg");
+	coolPic.explore();
+	coolPic.glitch();
+	coolPic.mirrorVertical();
+	coolPic.mirrorHorizontal();
+	coolPic.glitch();
+	coolPic.explore();
   }
   
 } // this } is the end of class Picture, put all new methods before this
