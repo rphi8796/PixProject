@@ -511,6 +511,27 @@ public class Picture extends SimplePicture
 	  } 
   }
   
+  public void pattern()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  int width = pixels[0].length;
+	  int height =  pixels.length;
+	  int x = 5;
+	  for (int i = 0; i < height; i += 5)
+	  {
+			for (int row = 0; row < height; row += 1) 
+			{
+				for (int col = 1; col < width; col += 1) 
+				{
+					if (((float) (row - i) / col) == 1.0) 
+					{
+						pixels[row][col].setColor(getRandomColor());
+					}
+				}
+			}
+	  }
+  }
+  
   
   /* Main method for testing - each class in Java can have a main 
    * method 
@@ -519,10 +540,7 @@ public class Picture extends SimplePicture
   {
 	Picture coolPic = new Picture("Sylvette.jpg");
 	coolPic.explore();
-	coolPic.glitch();
-	coolPic.mirrorVertical();
-	coolPic.mirrorHorizontal();
-	coolPic.glitch();
+	coolPic.pattern();
 	coolPic.explore();
   }
   
