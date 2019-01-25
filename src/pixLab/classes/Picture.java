@@ -510,26 +510,73 @@ public class Picture extends SimplePicture
 		  }
 	  } 
   }
-  
-  public void pattern()
+  public boolean isOdd(int value)
   {
-	  Pixel[][] pixels = this.getPixels2D();
-	  int width = pixels[0].length;
-	  int height =  pixels.length;
-	  int x = 5;
-	  for (int i = 0; i < height; i += 5)
+	  boolean isTrue = false;
+	  if (value % 2 == 0)
 	  {
-			for (int row = 0; row < height; row += 1) 
+		  isTrue = true;
+	  }
+	  return isTrue;
+  }
+  
+	public void pattern() 
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		int width = pixels[0].length;
+		int height = pixels.length;
+		int bounce = 60;
+		int lineStop = 120;
+		int x = 0;
+		int y = 0;
+		int count = 0;
+		
+
+//		while (count < 2) 
+//		{
+			int row = 0 + y;
+			int col = 0;
+			while (col < width) 
 			{
-				for (int col = 1; col < width; col += 1) 
+				pixels[row][col].setColor(Color.RED);
+				row++;
+				col++;
+				if (row == bounce) 
 				{
-					if (((float) (row - i) / col) == 1.0) 
-					{
-						pixels[row][col].setColor(getRandomColor());
-					}
+					col += 60;
+					row = 0;
+				}
+
+			}
+
+			col = 60;
+			row = 60 + y;
+			while (col < width) 
+			{
+				pixels[row][col].setColor(Color.RED);
+				row--;
+				col++;
+				if (row == 0) 
+				{
+					col += 60;
+					row = 60;
 				}
 			}
-	  }
+
+			col = 60;
+			row = 60 + y;
+			while (col < width) {
+				while (row <= lineStop) {
+					pixels[row][col].setColor(Color.RED);
+					row++;
+				}
+				row = 60;
+				col += 120;
+			}
+			
+//			y += 60;
+//			count++;
+//		}
   }
   
   
@@ -539,8 +586,10 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
 	Picture coolPic = new Picture("Sylvette.jpg");
-	coolPic.explore();
 	coolPic.pattern();
+//	coolPic.glitch();
+//	coolPic.mirrorHorizontal();
+//	coolPic.mirrorVertical();
 	coolPic.explore();
   }
   
