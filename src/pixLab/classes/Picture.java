@@ -503,9 +503,14 @@ public class Picture extends SimplePicture
 				  pixels[row][col].setColor(getRandomColor());
 			  }
 			  
-			  if ((((col + 1) / (row + 1)) == 2) || (row + 1) / (col + 1) == 2)
+			  int count = 5;
+			  while(count < 20)
 			  {
-				  pixels[row][col].setColor(getRandomColor());
+					if ((((col + 1) / (row + 1)) == count) || (row + 1) / (col + 1) == count)
+					{
+						pixels[row][col].setColor(getRandomColor());
+					}
+					count += 2;
 			  }
 		  }
 	  } 
@@ -525,59 +530,41 @@ public class Picture extends SimplePicture
 		Pixel[][] pixels = this.getPixels2D();
 		int width = pixels[0].length;
 		int height = pixels.length;
-		int bounce = 60;
-		int lineStop = 120;
-		int x = 0;
-		int y = 0;
-		int count = 0;
+
+		for (int x = 0, y = 0; y < height; y += 20)
+		{
+			for (int row = 0 + y, col = 0 + x; col < width && row < height; row++, col++)
+			{
+				pixels[row][col].setColor(Color.black);
+			}
+		}
 		
-
-//		while (count < 2) 
-//		{
-			int row = 0 + y;
-			int col = 0;
-			while (col < width) 
+		for (int x = 0, y = 0; x < width; x += 20)
+		{
+			for (int row = 0 + y, col = 0 + x; col < width && row < height; row++, col++)
 			{
-				pixels[row][col].setColor(Color.RED);
-				row++;
-				col++;
-				if (row == bounce) 
-				{
-					col += 60;
-					row = 0;
-				}
-
+				pixels[row][col].setColor(Color.black);
 			}
-
-			col = 60;
-			row = 60 + y;
-			while (col < width) 
+		}
+	}
+	
+	public void color()
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		
+		for (int red = 0; red > 255; red++)
+		{
+			for (int green = 0; green > 255; green++)
 			{
-				pixels[row][col].setColor(Color.RED);
-				row--;
-				col++;
-				if (row == 0) 
+				for (int blue = 0, col = 0; blue > 255; blue++, col++)
 				{
-					col += 60;
-					row = 60;
+					
 				}
 			}
-
-			col = 60;
-			row = 60 + y;
-			while (col < width) {
-				while (row <= lineStop) {
-					pixels[row][col].setColor(Color.RED);
-					row++;
-				}
-				row = 60;
-				col += 120;
-			}
-			
-//			y += 60;
-//			count++;
-//		}
-  }
+		}
+		
+	}
+	
   
   
   /* Main method for testing - each class in Java can have a main 
@@ -586,10 +573,9 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
 	Picture coolPic = new Picture("Sylvette.jpg");
-	coolPic.pattern();
-//	coolPic.glitch();
-//	coolPic.mirrorHorizontal();
-//	coolPic.mirrorVertical();
+	coolPic.explore();
+	coolPic.glitch();
+	coolPic.mirrorVertical();
 	coolPic.explore();
   }
   
