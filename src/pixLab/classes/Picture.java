@@ -565,6 +565,28 @@ public class Picture extends SimplePicture
 		
 	}
 	
+	public void anti()
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		
+		Color darkBlue = new Color(0, 142, 190);
+		  for (int row = 0; row < pixels.length; row++)
+		  {
+			  for (int col = 0; col < pixels[0].length; col++)
+			  {
+				  int greenVal = pixels[row][col].getGreen();
+				  if (greenVal > 197)
+				  {
+					  pixels[row][col].setColor(Color.white);
+				  }
+				  if (greenVal < 196)
+				  {
+					  pixels[row][col].setColor(darkBlue);
+				  }
+			  }
+		  }
+	}
+	
   
   
   /* Main method for testing - each class in Java can have a main 
@@ -572,10 +594,9 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-	Picture coolPic = new Picture("Sylvette.jpg");
+	Picture coolPic = new Picture("p3upscale.png");
 	coolPic.explore();
-	coolPic.glitch();
-	coolPic.mirrorVertical();
+	coolPic.anti();
 	coolPic.explore();
   }
   
